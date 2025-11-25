@@ -10,19 +10,21 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- eigene CSS -->
-    <link rel="stylesheet" href="<?= base_url('style.css') ?>">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-custom"">
+<nav class="navbar navbar-expand-lg navbar-custom">
     <div class="container-fluid">
-        <a class="navbar-brand text-white" href="#">Team 02</a>
+        <a class="navbar-brand d-flex align-items-center" href="/">
+            <img src="/logo.svg" alt="Logo" height="40" class="me-2">
+        </a>
         <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link text-white" href="#">Tasks</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="/">Tasks</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="#">Boards</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="#">Spalten</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="/spalten">Spalten</a></li>
         </ul>
     </div>
 </nav>
@@ -37,7 +39,7 @@
 </div>
 
 <!-- Footer -->
-<footer class="footer-custom text-white mt-5 p-3">
+<footer class="footer-custom text-white mt-auto p-3">
     <div class="container d-flex justify-content-between">
         <span>© Web-Entwicklung Team 02</span>
         <span>Impressum</span>
