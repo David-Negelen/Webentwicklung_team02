@@ -39,7 +39,7 @@
 
     <!-- Button oben -->
     <div class="mb-3">
-        <a href="#" class="btn btn-primary">Erstellen</a>
+        <a href="/erstellen" class="btn btn-primary">Erstellen</a>
     </div>
 
     <div class="card shadow-sm">
