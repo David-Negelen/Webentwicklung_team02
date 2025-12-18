@@ -27,4 +27,12 @@ class Home extends BaseController
         echo view("erstellen");
         echo view("templates/footer");
     }
+
+    public function testdb()
+    {
+        $db = \Config\Database::connect();
+        return $db->simpleQuery('SELECT 1')
+            ? 'DB-Verbindung OK'
+            : 'DB-Fehler';
+    }
 }
