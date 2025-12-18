@@ -8,9 +8,8 @@ class Tasks extends BaseController
 {
     public function index()
     {
-        $personenModel = new \App\Models\PersonenModel();
+        $personenModel = new PersonenModel();
         $personen = $personenModel->getData();
-
         $data = [
             'personen' => $personen
         ];
