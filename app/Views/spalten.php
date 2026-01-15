@@ -6,7 +6,7 @@
         </div>
         <div class="card-body">
             <div class="mb-3">
-                <a href="/erstellen" class="btn btn-primary">Erstellen</a>
+                <a href="<?= base_url('spalten/erstellen') ?>" class="btn btn-primary">Erstellen</a>
             </div>
 
             <table class="table table-bordered table-striped">

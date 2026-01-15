@@ -39,7 +39,7 @@
                 <!-- Buttons -->
                 <div class="mt-4">
                     <button type="submit" class="btn btn-primary me-2">Speichern</button>
-                    <a href="/spalten" class="btn btn-secondary">Abbrechen</a>
+                    <a href="<?= base_url('spalten') ?>" class="btn btn-secondary">Abbrechen</a>
                 </div>
             </form>
 
