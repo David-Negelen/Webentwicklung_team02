@@ -57,6 +57,17 @@ class Tasks extends BaseController
 
     public function postSubmit()
     {
+        $rules = [
+            'taskartenid' => 'required|integer',
+            'personenid' => 'required|integer',
+            'spaltenid' => 'required|integer',
+            'tasks' => 'required|string|max_length[255]',
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $taskModel = new TaskModel();
         $taskId = $this->request->getPost('task_id');
 
@@ -109,6 +120,17 @@ class Tasks extends BaseController
 
     public function postEdit($id)
     {
+        $rules = [
+            'taskartenid' => 'required|integer',
+            'personenid' => 'required|integer',
+            'spaltenid' => 'required|integer',
+            'tasks' => 'required|string|max_length[255]',
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $taskModel = new TaskModel();
         $taskId = $this->request->getPost('task_id');
 

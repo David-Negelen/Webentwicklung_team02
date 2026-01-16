@@ -6,6 +6,17 @@
                     <h3 class="mb-0"><?= isset($task) ? 'Task bearbeiten' : 'Neue Task erstellen' ?></h3>
                 </div>
                 <div class="card-body">
+                    <?php if (session()->getFlashdata('errors')): ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Validierungsfehler:</strong>
+                            <ul class="mb-0 mt-2">
+                                <?php foreach (session()->getFlashdata('errors') as $error): ?>
+                                    <li><?= esc($error) ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php endif; ?>
                     <form method="post" action="submit">
                         <?php if (isset($task)): ?>
                             <input type="hidden" name="task_id" value="<?= esc($task['id']) ?>">
