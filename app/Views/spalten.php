@@ -1,4 +1,3 @@
-<!-- Inhalt -->
 <div class="container mt-4">
     <div class="card shadow-sm">
         <div class="card-header bg-white">
@@ -6,7 +5,7 @@
         </div>
         <div class="card-body">
             <div class="mb-3">
-                <a href="<?= base_url('spalten/erstellen') ?>" class="btn btn-primary">Erstellen</a>
+                <a href="<?= base_url('spalten/create') ?>" class="btn btn-primary">Erstellen</a>
             </div>
 
             <table class="table table-bordered table-striped">
@@ -17,34 +16,33 @@
                     <th>Sortid</th>
                     <th>Spalte</th>
                     <th>Spaltenbeschreibung</th>
-                    <th>Bearbeiten</th>
+                    <th>Aktion</th>
                 </tr>
                 </thead>
 
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Board A</td>
-                    <td>100</td>
-                    <td>ToDo</td>
-                    <td>Alle Aufgaben, die noch nicht begonnen wurden</td>
-                    <td>
-                        <i class="fa-solid fa-pen me-2"></i>
-                        <i class="fa-solid fa-trash text-danger"></i>
-                    </td>
-                </tr>
+                <?php foreach ($spalten as $s): ?>
+                    <tr>
+                        <td><?= esc($s['id']) ?></td>
+                        <td><?= esc($s['board_name'] ?? '') ?></td>
+                        <td><?= esc($s['sortid']) ?></td>
+                        <td><?= esc($s['spalte']) ?></td>
+                        <td><?= esc($s['spaltenbeschreibung']) ?></td>
+                        <td>
+                            <a href="<?= base_url('spalten/edit/' . $s['id']) ?>"
+                               class="btn btn-sm btn-primary me-1"
+                               title="Bearbeiten">
+                                <i class="fa-solid fa-pen"></i>
+                            </a>
 
-                <tr>
-                    <td>2</td>
-                    <td>Board A</td>
-                    <td>200</td>
-                    <td>In Arbeit</td>
-                    <td>Aufgaben, die aktuell bearbeitet werden</td>
-                    <td>
-                        <i class="fa-solid fa-pen me-2"></i>
-                        <i class="fa-solid fa-trash text-danger"></i>
-                    </td>
-                </tr>
+                            <a href="<?= base_url('spalten/delete/' . $s['id']) ?>"
+                               class="btn btn-sm btn-danger"
+                               onclick="return confirm('Spalte wirklich löschen?');">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
                 </tbody>
             </table>
 
