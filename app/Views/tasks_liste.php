@@ -57,13 +57,14 @@
                             <?php endif; ?>
                         </td>
                         <td>
-
-                            <a href="<?= base_url('tasks/edit/' . $task['id']) ?>" class="btn btn-sm btn-primary me-2">
-                                <i class="fa-solid fa-pen"></i>
-                            </a>
-                            <a href="<?= base_url('tasks/delete/' . $task['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Sind Sie sicher, dass Sie diese Aufgabe löschen möchten?');">
-                                <i class="fa-solid fa-trash"></i>
-                            </a>
+                            <div class="d-flex flex-nowrap gap-2">
+                                <a href="<?= base_url('tasks/edit/' . $task['id']) ?>" class="btn btn-sm btn-primary me-2">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+                                <a href="<?= base_url('tasks/delete/' . $task['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Sind Sie sicher, dass Sie diese Aufgabe löschen möchten?');">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 <?php endforeach; ?>
