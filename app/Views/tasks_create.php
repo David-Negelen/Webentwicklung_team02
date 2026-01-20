@@ -1,4 +1,10 @@
 <div class="container my-5" >
+    <?php
+    $errors = session()->getFlashdata('errors') ?? [];
+    $taskarten = $taskarten ?? [];
+    $personen = $personen ?? [];
+    $spalten = $spalten ?? [];
+    ?>
     <div class="row">
         <div class="col-lg-8 offset-lg-2">
             <div class="card">
@@ -23,7 +29,10 @@
                         <?php endif; ?>
                         <div class="mb-3">
                             <label for="tasks" class="form-label">Taskbezeichnung</label>
-                            <input type="text" class="form-control" id="tasks" name="tasks" placeholder="Taskbezeichnung" value="<?= isset($task) ? esc($task['tasks']) : '' ?>" required>
+                            <input type="text" class="form-control <?= isset($errors['tasks']) ? 'is-invalid' : '' ?>" id="tasks" name="tasks" placeholder="Taskbezeichnung" value="<?= old('tasks', isset($task) ? esc($task['tasks']) : '') ?>" required>
+                            <?php if (isset($errors['tasks'])): ?>
+                                <div class="invalid-feedback"><?= esc($errors['tasks']) ?></div>
+                            <?php endif; ?>
                         </div>
 
                         <div class="row">

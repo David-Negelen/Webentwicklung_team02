@@ -1,4 +1,5 @@
 <div class="container mt-4">
+    <?php $boards = $boards ?? []; ?>
     <div class="card shadow-sm">
         <div class="card-header bg-white">
             <h2 class="mb-1"><?= !empty($spalte['id']) ? 'Spalte bearbeiten' : 'Spalte erstellen' ?></h2>
@@ -30,6 +31,9 @@
                               name="spaltenbeschreibung"
                               rows="4"
                               placeholder="Beschreibung der Spalte"><?= esc($spalte['spaltenbeschreibung'] ?? '') ?></textarea>
+                    <?php if (isset($validation) && $validation->hasError('spaltenbeschreibung')): ?>
+                        <div class="invalid-feedback"><?= $validation->getError('spaltenbeschreibung') ?></div>
+                    <?php endif; ?>
                 </div>
 
                 <div class="mb-3">

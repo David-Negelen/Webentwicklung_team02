@@ -63,6 +63,7 @@ class Spalten extends BaseController
         $rules = [
             'boardsid' => 'required|integer',
             'spalte'   => 'required',
+            'spaltenbeschreibung' => 'required',
             'sortid'   => 'required|integer',
         ];
 
