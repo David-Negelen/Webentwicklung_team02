@@ -27,5 +27,16 @@
                 </div>
             </div>
         </div>
+
+        <!-- Aufgabe 7 - Spalten -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Aufgabe 6</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Spalten anzeigen</h6>
+                    <a href="<?= base_url('spalten') ?>" class="btn btn-primary">Öffnen</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
