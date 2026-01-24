@@ -13,6 +13,7 @@ class TaskModel extends Model
     public function getTasksWithDetails()
     {
         return $this->select('tasks.id, 
+                      tasks.spaltenid,
                       tasks.tasks as tasktitel, 
                       tasks.notizen, 
                       tasks.erstelldatum,
@@ -33,7 +34,7 @@ class TaskModel extends Model
             ->join('boards', 'boards.id = spalten.boardsid')
             ->join('personen', 'personen.id = tasks.personenid')
             ->join('taskarten', 'taskarten.id = tasks.taskartenid')
-            ->orderBy('tasks.tasks', 'ASC')
+            ->orderBy('tasks.sortid', 'ASC')
             ->findAll();
     }
 

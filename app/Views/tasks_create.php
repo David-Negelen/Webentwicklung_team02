@@ -66,8 +66,13 @@
                                     <label for="spaltenid" class="form-label">Spalte</label>
                                     <select class="form-select" id="spaltenid" name="spaltenid" required>
                                         <option value="">-- Bitte auswählen --</option>
-                                        <?php foreach ($spalten as $spalte) : ?>
-                                            <option value="<?= esc($spalte['id']) ?>" <?= isset($task) && $task['spaltenid'] == $spalte['id'] ? 'selected' : '' ?>><?= esc($spalte['spalte']) ?></option>
+                                        <?php
+                                        $preselectedSpaltenId = $preselectedSpaltenId ?? null;
+                                        foreach ($spalten as $spalte) :
+                                            $isSelected = (isset($task) && $task['spaltenid'] == $spalte['id'])
+                                                       || (!isset($task) && $preselectedSpaltenId == $spalte['id']);
+                                        ?>
+                                            <option value="<?= esc($spalte['id']) ?>" <?= $isSelected ? 'selected' : '' ?>><?= esc($spalte['spalte']) ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>

@@ -12,14 +12,34 @@ class Tasks extends BaseController
     public function getindex()
     {
         $taskModel = new TaskModel();
+        $spaltenModel = new SpaltenModel();
+
+        // Alle Spalten laden (sortiert nach sortid)
+        $spalten = $spaltenModel->getSpaltenWithBoardName();
+
+        // Alle Tasks mit Details laden
         $tasks = $taskModel->getTasksWithDetails();
+
+        // Tasks nach Spalten-ID gruppieren
+        $tasksBySpalte = [];
+        foreach ($spalten as $spalte) {
+            $tasksBySpalte[$spalte['id']] = [];
+        }
+        foreach ($tasks as $task) {
+            if (isset($tasksBySpalte[$task['spaltenid']])) {
+                $tasksBySpalte[$task['spaltenid']][] = $task;
+            }
+        }
+
         $data = [
-            'tasks' => $tasks
+            'spalten' => $spalten,
+            'tasksBySpalte' => $tasksBySpalte,
+            'tasks' => $tasks // für Kompatibilität
         ];
 
         echo view('templates/header');
         echo view('templates/menu');
-        echo view('tasks_liste', $data);
+        echo view('tasks_board', $data);
         echo view('templates/footer');
     }
 
@@ -43,10 +63,14 @@ class Tasks extends BaseController
         $personenModel = new PersonenModel();
         $spaltenModel = new SpaltenModel();
 
+        // Spalten-ID aus Query-Parameter holen (für schnelles Anlegen aus einer Spalte)
+        $preselectedSpaltenId = $this->request->getGet('spaltenid');
+
         $data = [
             'taskarten' => $taskartenModel->getData(),
             'personen' => $personenModel->getData(),
             'spalten' => $spaltenModel->getData(),
+            'preselectedSpaltenId' => $preselectedSpaltenId,
         ];
 
         echo view('templates/header');

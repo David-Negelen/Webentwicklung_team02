@@ -1,5 +1,8 @@
+<!-- End Main Content Wrapper -->
+</main>
+
 <!-- Footer -->
-<footer class="footer-custom text-white mt-auto p-3">
+<footer class="footer-custom text-white p-3">
     <div class="container d-flex justify-content-between">
         <span>© Web-Entwicklung Team 02</span>
         <span>Impressum</span>

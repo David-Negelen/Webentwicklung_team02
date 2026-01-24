@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <!-- Aufgabe 7 - Spalten -->
+        <!-- Aufgabe 6 - Spalten -->
         <div class="col-md-6 col-lg-4">
             <div class="card">
                 <div class="card-body">
