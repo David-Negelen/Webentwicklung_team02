@@ -6,6 +6,7 @@ use App\Models\PersonenModel;
 use App\Models\TaskModel;
 use App\Models\TaskartenModel;
 use App\Models\SpaltenModel;
+use App\Models\BoardsModel;
 
 class Tasks extends BaseController
 {
@@ -13,14 +14,18 @@ class Tasks extends BaseController
     {
         $taskModel = new TaskModel();
         $spaltenModel = new SpaltenModel();
-
-        // Alle Spalten laden (sortiert nach sortid)
+        $boardsModel = new BoardsModel();
+        $boards = $boardsModel->getData();
+        $selectedBoardId = $this->request->getGet('boardid');
         $spalten = $spaltenModel->getSpaltenWithBoardName();
+        if ($selectedBoardId) {
+            $spalten = array_filter($spalten, function($spalte) use ($selectedBoardId) {
+                return $spalte['boardsid'] == $selectedBoardId;
+            });
+        }
 
-        // Alle Tasks mit Details laden
         $tasks = $taskModel->getTasksWithDetails();
 
-        // Tasks nach Spalten-ID gruppieren
         $tasksBySpalte = [];
         foreach ($spalten as $spalte) {
             $tasksBySpalte[$spalte['id']] = [];
@@ -34,7 +39,9 @@ class Tasks extends BaseController
         $data = [
             'spalten' => $spalten,
             'tasksBySpalte' => $tasksBySpalte,
-            'tasks' => $tasks // für Kompatibilität
+            'tasks' => $tasks,
+            'boards' => $boards,
+            'selectedBoardId' => $selectedBoardId,
         ];
 
         echo view('templates/header');
@@ -181,3 +188,4 @@ class Tasks extends BaseController
         return redirect()->to('/tasks');
     }
 }
+

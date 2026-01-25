@@ -1,12 +1,27 @@
 <?php
 $spalten = $spalten ?? [];
 $tasksBySpalte = $tasksBySpalte ?? [];
+$boards = $boards ?? [];
+$selectedBoardId = $selectedBoardId ?? null;
+if (empty($selectedBoardId) && !empty($boards)) {
+    $selectedBoardId = $boards[0]['id'];
+}
 ?>
 
 <div class="container-fluid mt-4 px-4">
     <div class="card shadow-sm mx-auto" style="width: fit-content; max-width: 100%;">
         <div class="card-header bg-white d-flex justify-content-between align-items-center">
-            <h2 class="mb-0">Taskboard</h2>
+            <div class="d-flex align-items-center gap-3 flex-wrap">
+                <h2 class="mb-0">Taskboard</h2>
+                <form class="d-inline">
+                    <select id="boardSelect" class="form-select d-inline w-auto" onchange="if(this.value) window.location=this.value === 'all' ? '?' : '?boardid='+this.value;">
+                        <?php foreach ($boards as $b): ?>
+                            <option value="<?= esc($b['id']) ?>" <?= ($selectedBoardId == $b['id']) ? 'selected' : '' ?>><?= esc($b['board']) ?></option>
+                        <?php endforeach; ?>
+                        <option value="all" <?= empty($_GET['boardid']) ? 'selected' : '' ?>>Alle Boards</option>
+                    </select>
+                </form>
+            </div>
             <a href="<?= base_url('tasks/create') ?>" class="btn btn-primary">
                 <i class="fas fa-plus me-2"></i>Neue Task
             </a>
@@ -153,28 +168,24 @@ $tasksBySpalte = $tasksBySpalte ?? [];
 </div>
 
 <style>
-/* Taskboard Wrapper - ermöglicht horizontales Scrollen */
 .taskboard-wrapper {
     overflow-x: auto;
     overflow-y: hidden;
     padding-bottom: 15px;
 }
 
-/* Flexbox Container für die Spalten */
 .taskboard-container {
     display: flex;
     flex-wrap: nowrap;
     gap: 20px;
 }
 
-/* Einzelne Spalte - feste Breite */
 .taskboard-column {
     flex: 0 0 350px;
     min-width: 350px;
     max-width: 350px;
 }
 
-/* Tasks Container innerhalb der Spalte */
 .tasks-container {
     background-color: #fff;
     min-height: 400px;
@@ -183,12 +194,10 @@ $tasksBySpalte = $tasksBySpalte ?? [];
     padding: 15px;
 }
 
-/* Task-Card Styling */
 .task-card {
     background-color: #fff;
 }
 
-/* Horizontale Scrollbar Styling */
 .taskboard-wrapper::-webkit-scrollbar {
     height: 10px;
 }
@@ -207,7 +216,6 @@ $tasksBySpalte = $tasksBySpalte ?? [];
     background: #495057;
 }
 
-/* Vertikale Scrollbar in Spalten */
 .tasks-container::-webkit-scrollbar {
     width: 6px;
 }
@@ -226,7 +234,6 @@ $tasksBySpalte = $tasksBySpalte ?? [];
     background: #6c757d;
 }
 
-/* Responsive Anpassungen */
 @media (max-width: 576px) {
     .taskboard-column {
         flex: 0 0 320px;
