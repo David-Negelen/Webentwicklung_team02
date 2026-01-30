@@ -40,15 +40,12 @@ class Boards extends BaseController
     {
         $model = new BoardsModel();
         $id = $this->request->getPost('board_id');
-        $rules = [
-            'board' => 'required',
-        ];
 
         $data = [
             'board' => (string) $this->request->getPost('board'),
         ];
 
-        if (! $this->validate($rules)) {
+        if (! $this->validate('board')) {
             $viewData = [
                 'board'      => array_merge(['id' => $id], $data),
                 'validation' => $this->validator,

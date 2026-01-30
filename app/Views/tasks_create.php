@@ -12,82 +12,84 @@
                     <h3 class="mb-0"><?= isset($task) ? 'Task bearbeiten' : 'Neue Task erstellen' ?></h3>
                 </div>
                 <div class="card-body">
-                    <?php if (session()->getFlashdata('errors')): ?>
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>Validierungsfehler:</strong>
-                            <ul class="mb-0 mt-2">
-                                <?php foreach (session()->getFlashdata('errors') as $error): ?>
-                                    <li><?= esc($error) ?></li>
-                                <?php endforeach; ?>
-                            </ul>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    <?php endif; ?>
                     <form method="post" action="submit">
                         <?php if (isset($task)): ?>
                             <input type="hidden" name="task_id" value="<?= esc($task['id']) ?>">
                         <?php endif; ?>
                         <div class="mb-3">
                             <label for="tasks" class="form-label">Taskbezeichnung</label>
-                            <input type="text" class="form-control <?= isset($errors['tasks']) ? 'is-invalid' : '' ?>" id="tasks" name="tasks" placeholder="Taskbezeichnung" value="<?= old('tasks', isset($task) ? esc($task['tasks']) : '') ?>" required>
+                            <input type="text" class="form-control <?= isset($errors['tasks']) ? 'is-invalid' : '' ?>" id="tasks" name="tasks" placeholder="Taskbezeichnung" value="<?= old('tasks', isset($task) ? esc($task['tasks']) : '') ?>">
                             <?php if (isset($errors['tasks'])): ?>
                                 <div class="invalid-feedback"><?= esc($errors['tasks']) ?></div>
                             <?php endif; ?>
                         </div>
-
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="taskartenid" class="form-label">Taskart</label>
-                                    <select class="form-select" id="taskartenid" name="taskartenid" required>
+                                    <select class="form-select <?= isset($errors['taskartenid']) ? 'is-invalid' : '' ?>" id="taskartenid" name="taskartenid">
                                         <option value="">-- Bitte auswählen --</option>
                                         <?php foreach ($taskarten as $taskart) : ?>
-                                            <option value="<?= esc($taskart['id']) ?>" <?= isset($task) && $task['taskartenid'] == $taskart['id'] ? 'selected' : '' ?>><?= esc($taskart['taskart']) ?></option>
+                                            <option value="<?= esc($taskart['id']) ?>"
+                                                <?php
+                                                    $selectedTaskartId = old('taskartenid', isset($task) ? $task['taskartenid'] : '');
+                                                    if ($selectedTaskartId == $taskart['id']) echo 'selected';
+                                                ?>><?= esc($taskart['taskart']) ?></option>
                                         <?php endforeach; ?>
                                     </select>
+                                    <?php if (isset($errors['taskartenid'])): ?>
+                                        <div class="invalid-feedback"><?= esc($errors['taskartenid']) ?></div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="personenid" class="form-label">Person</label>
-                                    <select class="form-select" id="personenid" name="personenid" required>
+                                    <select class="form-select <?= isset($errors['personenid']) ? 'is-invalid' : '' ?>" id="personenid" name="personenid">
                                         <option value="">-- Bitte auswählen --</option>
                                         <?php foreach ($personen as $person) : ?>
-                                            <option value="<?= esc($person['id']) ?>" <?= isset($task) && $task['personenid'] == $person['id'] ? 'selected' : '' ?>><?= esc($person['vorname'] . ' ' . $person['name']) ?></option>
+                                            <option value="<?= esc($person['id']) ?>"
+                                                <?php
+                                                    $selectedPersonenId = old('personenid', isset($task) ? $task['personenid'] : '');
+                                                    if ($selectedPersonenId == $person['id']) echo 'selected';
+                                                ?>><?= esc($person['vorname'] . ' ' . $person['name']) ?></option>
                                         <?php endforeach; ?>
                                     </select>
+                                    <?php if (isset($errors['personenid'])): ?>
+                                        <div class="invalid-feedback"><?= esc($errors['personenid']) ?></div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="spaltenid" class="form-label">Spalte</label>
-                                    <select class="form-select" id="spaltenid" name="spaltenid" required>
+                                    <select class="form-select <?= isset($errors['spaltenid']) ? 'is-invalid' : '' ?>" id="spaltenid" name="spaltenid">
                                         <option value="">-- Bitte auswählen --</option>
                                         <?php
-                                        $preselectedSpaltenId = $preselectedSpaltenId ?? null;
+                                        $selectedSpaltenId = old('spaltenid', isset($task) ? $task['spaltenid'] : ($preselectedSpaltenId ?? ''));
                                         foreach ($spalten as $spalte) :
-                                            $isSelected = (isset($task) && $task['spaltenid'] == $spalte['id'])
-                                                       || (!isset($task) && $preselectedSpaltenId == $spalte['id']);
                                         ?>
-                                            <option value="<?= esc($spalte['id']) ?>" <?= $isSelected ? 'selected' : '' ?>><?= esc($spalte['spalte']) ?></option>
+                                            <option value="<?= esc($spalte['id']) ?>" <?= $selectedSpaltenId == $spalte['id'] ? 'selected' : '' ?>><?= esc($spalte['spalte']) ?></option>
                                         <?php endforeach; ?>
                                     </select>
+                                    <?php if (isset($errors['spaltenid'])): ?>
+                                        <div class="invalid-feedback"><?= esc($errors['spaltenid']) ?></div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="erinnerungsdatum" class="form-label">Erinnerungsdatum</label>
-                                    <input type="datetime-local" class="form-control" id="erinnerungsdatum" name="erinnerungsdatum" value="<?= isset($task) && $task['erinnerungsdatum'] ? substr($task['erinnerungsdatum'], 0, 16) : '' ?>">
+                                    <input type="datetime-local" class="form-control" id="erinnerungsdatum" name="erinnerungsdatum" value="<?= old('erinnerungsdatum', isset($task) && $task['erinnerungsdatum'] ? substr($task['erinnerungsdatum'], 0, 16) : '') ?>">
                                 </div>
                             </div>
                         </div>
 
                         <div class="mb-3 form-check">
                             <input type="hidden" name="erinnerung" value="0">
-                            <input type="checkbox" class="form-check-input" id="erinnerung" name="erinnerung" value="1" <?= isset($task) && $task['erinnerung'] ? 'checked' : '' ?>>
+                            <input type="checkbox" class="form-check-input" id="erinnerung" name="erinnerung" value="1" <?= old('erinnerung', isset($task) && $task['erinnerung'] ? 'checked' : '') ? 'checked' : '' ?>>
                             <label class="form-check-label" for="erinnerung">
                                 Erinnerung aktivieren
                             </label>
@@ -100,7 +102,7 @@
 
                         <div class="mb-3">
                             <label for="notizen" class="form-label">Notiz</label>
-                            <textarea class="form-control" id="notizen" name="notizen" rows="4" placeholder="Geben Sie hier zusätzliche Informationen ein..."><?= isset($task) ? esc($task['notizen']) : '' ?></textarea>
+                            <textarea class="form-control" id="notizen" name="notizen" rows="4" placeholder="Geben Sie hier zusätzliche Informationen ein..."><?= old('notizen', isset($task) ? esc($task['notizen']) : '') ?></textarea>
                         </div>
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">

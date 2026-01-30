@@ -55,17 +55,7 @@ class Spalten extends BaseController
     public function postSubmit()
     {
         $model = new SpaltenModel();
-
-        // ID holen (leer = neu, wert = bearbeiten)
         $id = $this->request->getPost('spalten_id');
-
-        // Validierungsregeln
-        $rules = [
-            'boardsid' => 'required|integer',
-            'spalte'   => 'required',
-            'spaltenbeschreibung' => 'required',
-            'sortid'   => 'required|integer',
-        ];
 
         // Daten aus dem Formular holen
         $data = [
@@ -76,11 +66,9 @@ class Spalten extends BaseController
         ];
 
         // Validierung prüfen
-        if (! $this->validate($rules)) {
-            // Bei Fehler: Formular mit Fehlern und alten Daten neu anzeigen
+        if (! $this->validate('spalte')) {
             $viewData = [
                 'boards'     => $this->loadBoards(),
-                // Wir mischen die ID wieder dazu, damit das Formular weiß, ob es Edit oder Create war
                 'spalte'     => array_merge(['id' => $id], $data),
                 'validation' => $this->validator,
             ];
@@ -89,7 +77,7 @@ class Spalten extends BaseController
             echo view('templates/menu');
             echo view('erstellen', $viewData);
             echo view('templates/footer');
-            return; // Wichtig: Hier abbrechen
+            return;
         }
 
         // Speichern oder Aktualisieren
