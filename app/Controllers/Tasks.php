@@ -173,4 +173,29 @@ class Tasks extends BaseController
 
         return redirect()->to('/tasks');
     }
+
+    public function postUpdatePositions()
+    {
+        $json = $this->request->getJSON(true);
+        $updates = $json['updates'] ?? [];
+
+        if (!is_array($updates) || empty($updates)) {
+            return $this->response->setJSON(['ok' => false, 'error' => 'No updates']);
+        }
+
+        $taskModel = new TaskModel();
+
+        foreach ($updates as $u) {
+            if (!isset($u['taskId'], $u['spaltenId'], $u['sortid'])) {
+                continue;
+            }
+
+            $taskModel->update((int)$u['taskId'], [
+                'spaltenid' => (int)$u['spaltenId'],
+                'sortid'    => (int)$u['sortid'],
+            ]);
+        }
+
+        return $this->response->setJSON(['ok' => true]);
+    }
 }

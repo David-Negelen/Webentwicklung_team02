@@ -51,7 +51,7 @@ class Spalten extends BaseController
         echo view('templates/footer');
     }
 
-    // Diese Methode verarbeitet SOWOHL das Erstellen ALS AUCH das Bearbeiten
+
     public function postSubmit()
     {
         $model = new SpaltenModel();

@@ -51,7 +51,7 @@ if (empty($selectedBoardId) && !empty($boards)) {
                             <?php endif; ?>
                         </div>
 
-                        <div class="card-body tasks-container">
+                        <div class="card-body tasks-container" data-spalten-id="<?= esc($spalte['id']) ?>">
                             <?php if (empty($tasksBySpalte[$spalte['id']])): ?>
                                 <p class="text-muted text-center py-4">
                                     <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
@@ -59,7 +59,7 @@ if (empty($selectedBoardId) && !empty($boards)) {
                                 </p>
                             <?php else: ?>
                                 <?php foreach ($tasksBySpalte[$spalte['id']] as $task): ?>
-                                <div class="card mb-3 shadow-sm task-card">
+                                <div class="card mb-3 shadow-sm task-card" data-task-id="<?= esc($task['id']) ?>">
                                     <div class="card-body p-3">
                                         <!-- Header mit Titel und Dropdown-Menü -->
                                         <div class="d-flex justify-content-between align-items-start mb-2">
@@ -246,3 +246,50 @@ if (empty($selectedBoardId) && !empty($boards)) {
     }
 }
 </style>
+
+
+
+    <link rel="stylesheet" href="https://unpkg.com/dragula/dist/dragula.min.css">
+    <script src="https://unpkg.com/dragula/dist/dragula.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const containers = Array.from(document.querySelectorAll('.tasks-container'));
+        if (!containers.length) return;
+
+        const drake = dragula(containers);
+
+        drake.on('drop', async () => {
+            const updates = [];
+
+            containers.forEach(col => {
+                const spaltenId = parseInt(col.dataset.spaltenId, 10);
+                const cards = Array.from(col.querySelectorAll('.task-card'));
+
+                cards.forEach((card, index) => {
+                    updates.push({
+                        taskId: parseInt(card.dataset.taskId, 10),
+                        spaltenId: spaltenId,
+                        sortid: index + 1,
+                    });
+                });
+            });
+
+            try {
+                const res = await fetch('/public/tasks/update-positions', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ updates }),
+                });
+
+                const data = await res.json();
+                if (!data.ok) {
+                    console.error(data);
+                    alert('Speichern fehlgeschlagen');
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Netzwerkfehler beim Speichern');
+            }
+        });
+    });
+</script>
