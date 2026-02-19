@@ -60,7 +60,6 @@ if (empty($selectedBoardId) && !empty($boards)) {
                                 <?php foreach ($tasksBySpalte[$spalte['id']] as $task): ?>
                                 <div class="card mb-3 shadow-sm task-card" data-task-id="<?= esc($task['id']) ?>">
                                     <div class="card-body p-3">
-                                        <!-- Header mit Titel und Dropdown-Menü -->
                                         <div class="d-flex justify-content-between align-items-start mb-2">
                                             <h6 class="card-title mb-0 flex-grow-1">
                                                 <?php if (!empty($task['taskartenicon'])): ?>
@@ -68,7 +67,6 @@ if (empty($selectedBoardId) && !empty($boards)) {
                                                 <?php endif; ?>
                                                 <?= esc($task['tasktitel']) ?>
                                             </h6>
-                                            <!-- Dropdown-Menü -->
                                             <div class="dropdown">
                                                 <button class="btn btn-sm btn-light dropdown-toggle"
                                                         type="button"
@@ -94,7 +92,6 @@ if (empty($selectedBoardId) && !empty($boards)) {
                                             </div>
                                         </div>
 
-                                        <!-- Taskart Badge -->
                                         <div class="mb-3">
                                             <span class="badge bg-info text-dark">
                                                 <?= esc($task['taskartname']) ?>
@@ -104,7 +101,6 @@ if (empty($selectedBoardId) && !empty($boards)) {
                                             <?php endif; ?>
                                         </div>
 
-                                        <!-- Erstelldatum und Erinnerungsdatum -->
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <div class="d-flex align-items-center">
                                                 <i class="fas fa-calendar-plus text-muted me-1"></i>
@@ -134,7 +130,6 @@ if (empty($selectedBoardId) && !empty($boards)) {
                                             <?php endif; ?>
                                         </div>
 
-                                        <!-- Zugeordnete Person -->
                                         <div class="d-flex align-items-center mt-3 pt-2 border-top">
                                             <i class="fas fa-user-circle fa-lg text-secondary me-2"></i>
                                             <div>

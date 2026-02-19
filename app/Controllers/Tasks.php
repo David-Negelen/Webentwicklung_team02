@@ -70,7 +70,6 @@ class Tasks extends BaseController
         $personenModel = new PersonenModel();
         $spaltenModel = new SpaltenModel();
 
-        // Spalten-ID aus Query-Parameter holen (für schnelles Anlegen aus einer Spalte)
         $preselectedSpaltenId = $this->request->getGet('spaltenid');
 
         $data = [
@@ -106,10 +105,8 @@ class Tasks extends BaseController
         ];
 
         if ($taskId) {
-            // Update existing task
             $taskModel->update($taskId, $data);
         } else {
-            // Create new task
             $data['sortid'] = 1;
             $data['erstelldatum'] = date('Y-m-d H:i:s');
             $data['erledigt'] = 0;

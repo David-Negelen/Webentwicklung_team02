@@ -6,7 +6,6 @@ use App\Models\SpaltenModel;
 
 class Spalten extends BaseController
 {
-    // Hilfsfunktion zum Laden der Boards
     private function loadBoards(): array
     {
         $db = db_connect();
@@ -57,7 +56,6 @@ class Spalten extends BaseController
         $model = new SpaltenModel();
         $id = $this->request->getPost('spalten_id');
 
-        // Daten aus dem Formular holen
         $data = [
             'boardsid'            => (int) $this->request->getPost('boardsid'),
             'spalte'              => (string) $this->request->getPost('spalte'),
@@ -65,7 +63,6 @@ class Spalten extends BaseController
             'sortid'              => (int) $this->request->getPost('sortid'),
         ];
 
-        // Validierung prüfen
         if (! $this->validate('spalte')) {
             $viewData = [
                 'boards'     => $this->loadBoards(),
@@ -80,12 +77,9 @@ class Spalten extends BaseController
             return;
         }
 
-        // Speichern oder Aktualisieren
         if (!empty($id)) {
-            // Update
             $ok = $model->update($id, $data);
         } else {
-            // Insert
             $ok = $model->insert($data);
         }
 
@@ -96,7 +90,6 @@ class Spalten extends BaseController
         return redirect()->to(site_url('spalten'));
     }
 
-    // Fallback: if /spalten/submit is called with GET, redirect to create
     public function getSubmit()
     {
         return redirect()->to(site_url('spalten/create'));
@@ -118,7 +111,7 @@ class Spalten extends BaseController
 
         echo view('templates/header');
         echo view('templates/menu');
-        echo view('erstellen', $data); // Wir nutzen die gleiche View wie bei Create
+        echo view('erstellen', $data);
         echo view('templates/footer');
     }
 

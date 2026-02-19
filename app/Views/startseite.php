@@ -1,12 +1,10 @@
-<!-- Inhalt -->
+
 <div class="container mt-4">
-    <!-- Header -->
     <div class="mb-4">
         <h1 class="mb-3">Übersicht</h1>
     </div>
 
     <div class="row g-4">
-        <!-- Aufgabe 4 - Personen -->
         <div class="col-md-6 col-lg-4">
             <div class="card">
                 <div class="card-body">
@@ -17,7 +15,6 @@
             </div>
         </div>
 
-        <!-- Aufgabe 6 - Spalten -->
         <div class="col-md-6 col-lg-4">
             <div class="card">
                 <div class="card-body">
@@ -28,7 +25,6 @@
             </div>
         </div>
 
-        <!-- Aufgabe 7 - Boards -->
         <div class="col-md-6 col-lg-4">
             <div class="card">
                 <div class="card-body">
