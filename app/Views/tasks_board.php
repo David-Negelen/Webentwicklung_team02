@@ -52,12 +52,11 @@ if (empty($selectedBoardId) && !empty($boards)) {
                         </div>
 
                         <div class="card-body tasks-container" data-spalten-id="<?= esc($spalte['id']) ?>">
-                            <?php if (empty($tasksBySpalte[$spalte['id']])): ?>
-                                <p class="text-muted text-center py-4">
-                                    <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
-                                    Keine Tasks
-                                </p>
-                            <?php else: ?>
+                            <p class="text-muted text-center py-4 empty-message" style="<?= !empty($tasksBySpalte[$spalte['id']]) ? 'display: none;' : '' ?>">
+                                <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+                                Keine Tasks
+                            </p>
+                            <?php if (!empty($tasksBySpalte[$spalte['id']])): ?>
                                 <?php foreach ($tasksBySpalte[$spalte['id']] as $task): ?>
                                 <div class="card mb-3 shadow-sm task-card" data-task-id="<?= esc($task['id']) ?>">
                                     <div class="card-body p-3">
@@ -198,6 +197,11 @@ if (empty($selectedBoardId) && !empty($boards)) {
     background-color: #fff;
 }
 
+.empty-message {
+    pointer-events: none;
+    user-select: none;
+}
+
 .taskboard-wrapper::-webkit-scrollbar {
     height: 10px;
 }
@@ -256,9 +260,82 @@ if (empty($selectedBoardId) && !empty($boards)) {
         const containers = Array.from(document.querySelectorAll('.tasks-container'));
         if (!containers.length) return;
 
-        const drake = dragula(containers);
+        function updateEmptyMessages() {
+            containers.forEach(col => {
+                const emptyMessage = col.querySelector('.empty-message');
+                const taskCards = col.querySelectorAll('.task-card');
+                const spaltenId = col.dataset.spaltenId;
+
+                if (emptyMessage) {
+                    if (taskCards.length === 0) {
+                        emptyMessage.style.display = '';
+                    } else {
+                        emptyMessage.style.display = 'none';
+                    }
+                }
+
+                const badge = col.closest('.card').querySelector('.badge');
+                if (badge) {
+                    badge.textContent = taskCards.length;
+                }
+            });
+        }
+
+        const drake = dragula(containers, {
+            moves: function (el, container, handle) {
+                return el.classList.contains('task-card');
+            },
+            accepts: function (el, target, source, sibling) {
+                if (sibling && sibling.classList.contains('empty-message')) {
+                    return false;
+                }
+                return true;
+            }
+        });
+
+        function updateEmptyMessagesDuringDrag() {
+            containers.forEach(col => {
+                const emptyMessage = col.querySelector('.empty-message');
+                if (!emptyMessage) return;
+
+                const hasShadow = col.querySelector('.gu-transit');
+                const taskCards = Array.from(col.querySelectorAll('.task-card')).filter(card => !card.classList.contains('gu-transit'));
+
+                if (taskCards.length === 0 && !hasShadow) {
+                    emptyMessage.style.display = '';
+                } else {
+                    emptyMessage.style.display = 'none';
+                }
+            });
+        }
+
+        drake.on('over', (el, container) => {
+            updateEmptyMessagesDuringDrag();
+        });
+
+        drake.on('out', (el, container) => {
+            setTimeout(() => {
+                updateEmptyMessagesDuringDrag();
+            }, 10);
+        });
+
+        drake.on('shadow', (el, container) => {
+            updateEmptyMessagesDuringDrag();
+        });
+
+        drake.on('cancel', (el, container) => {
+            containers.forEach(col => {
+                const emptyMessage = col.querySelector('.empty-message');
+                const taskCards = col.querySelectorAll('.task-card');
+                if (emptyMessage && taskCards.length === 0) {
+                    emptyMessage.style.display = '';
+                }
+            });
+        });
 
         drake.on('drop', async () => {
+            updateEmptyMessages();
+
             const updates = [];
 
             containers.forEach(col => {
