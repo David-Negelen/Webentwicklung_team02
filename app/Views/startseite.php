@@ -16,7 +16,7 @@
 
         <!-- Tasks -->
         <div class="col-md-6 col-lg-3">
-            <a href="<?= site_url('tasks') ?>" class="text-decoration-none">
+            <a href="<?= base_url('tasks') ?>" class="text-decoration-none">
                 <div class="card h-100 shadow-sm feature-card border-primary">
                     <div class="card-body text-center p-4">
                         <i class="fas fa-tasks feature-icon-large text-primary mb-3"></i>
@@ -32,7 +32,7 @@
 
         <!-- Boards -->
         <div class="col-md-6 col-lg-3">
-            <a href="<?= site_url('boards') ?>" class="text-decoration-none">
+            <a href="<?= base_url('boards') ?>" class="text-decoration-none">
                 <div class="card h-100 shadow-sm feature-card border-success">
                     <div class="card-body text-center p-4">
                         <i class="fas fa-clipboard feature-icon-large text-success mb-3"></i>
@@ -48,7 +48,7 @@
 
         <!-- Spalten -->
         <div class="col-md-6 col-lg-3">
-            <a href="<?= site_url('spalten') ?>" class="text-decoration-none">
+            <a href="<?= base_url('spalten') ?>" class="text-decoration-none">
                 <div class="card h-100 shadow-sm feature-card border-warning">
                     <div class="card-body text-center p-4">
                         <i class="fas fa-columns feature-icon-large text-warning mb-3"></i>
@@ -64,7 +64,7 @@
 
         <!-- Personen -->
         <div class="col-md-6 col-lg-3">
-            <a href="<?= site_url('tasks/personen') ?>" class="text-decoration-none">
+            <a href="<?= base_url('tasks/personen') ?>" class="text-decoration-none">
                 <div class="card h-100 shadow-sm feature-card border-info">
                     <div class="card-body text-center p-4">
                         <i class="fas fa-users feature-icon-large text-info mb-3"></i>
