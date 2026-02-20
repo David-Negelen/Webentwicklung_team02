@@ -28,7 +28,6 @@
                     <a href="/public/boards" class="btn btn-secondary">Abbrechen</a>
                 </div>
             </form>
-
         </div>
     </div>
 </div>

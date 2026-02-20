@@ -3,18 +3,11 @@
 namespace App\Controllers;
 
 use App\Models\SpaltenModel;
+use App\Models\BoardsModel;
+use App\Models\TaskModel;
 
 class Spalten extends BaseController
 {
-    private function loadBoards(): array
-    {
-        $db = db_connect();
-        return $db->table('boards')
-            ->select('id, board')
-            ->orderBy('board', 'ASC')
-            ->get()
-            ->getResultArray();
-    }
 
     public function getindex()
     {
@@ -34,7 +27,7 @@ class Spalten extends BaseController
     public function getCreate()
     {
         $data = [
-            'boards' => $this->loadBoards(),
+            'boards' => (new BoardsModel())->orderBy('board', 'ASC')->findAll(),
             'spalte' => [
                 'id' => '',
                 'boardsid' => '',
@@ -65,7 +58,7 @@ class Spalten extends BaseController
 
         if (! $this->validate('spalte')) {
             $viewData = [
-                'boards'     => $this->loadBoards(),
+                'boards'     => (new BoardsModel())->orderBy('board', 'ASC')->findAll(),
                 'spalte'     => array_merge(['id' => $id], $data),
                 'validation' => $this->validator,
             ];
@@ -105,7 +98,7 @@ class Spalten extends BaseController
         }
 
         $data = [
-            'boards' => $this->loadBoards(),
+            'boards' => (new BoardsModel())->orderBy('board', 'ASC')->findAll(),
             'spalte' => $spalte,
         ];
 
@@ -117,9 +110,16 @@ class Spalten extends BaseController
 
     public function getDelete($id)
     {
+        $taskModel = new TaskModel();
+        $tasksCount = $taskModel->countBySpaltenId($id);
+
+        if ($tasksCount > 0) {
+            return redirect()->back()->with('error', 'Diese Spalte kann nicht gelöscht werden, da sie noch Tasks enthält. Bitte löschen Sie zuerst alle Tasks.');
+        }
+
         $model = new SpaltenModel();
         $model->delete($id);
 
-        return redirect()->to(site_url('spalten'));
+        return redirect()->to(site_url('spalten'))->with('success', 'Spalte erfolgreich gelöscht.');
     }
 }

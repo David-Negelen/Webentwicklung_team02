@@ -42,4 +42,9 @@ class TaskModel extends Model
     {
         return $this->orderBy('tasks', 'ASC')->findAll();
     }
+
+    public function countBySpaltenId(int $spaltenId): int
+    {
+        return $this->where('spaltenid', $spaltenId)->countAllResults();
+    }
 }

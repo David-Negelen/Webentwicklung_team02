@@ -29,4 +29,14 @@ class SpaltenModel extends Model
     {
         return $this->findAll();
     }
+
+    public function countBySpaltenId(int $spaltenId): int
+    {
+        return $this->where('id', $spaltenId)->countAllResults();
+    }
+
+    public function countByBoardId(int $boardId): int
+    {
+        return $this->where('boardsid', $boardId)->countAllResults();
+    }
 }

@@ -70,7 +70,6 @@
                     <a href="/public/spalten" class="btn btn-secondary">Abbrechen</a>
                 </div>
             </form>
-
         </div>
     </div>
 </div>

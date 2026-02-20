@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\BoardsModel;
+use App\Models\SpaltenModel;
 
 class Boards extends BaseController
 {
@@ -97,9 +98,16 @@ class Boards extends BaseController
 
     public function getDelete($id)
     {
+        $spaltenModel = new SpaltenModel();
+        $spaltenCount = $spaltenModel->countByBoardId($id);
+
+        if ($spaltenCount > 0) {
+            return redirect()->back()->with('error', 'Dieses Board kann nicht gelöscht werden, da es noch Spalten enthält. Bitte löschen Sie zuerst alle Spalten.');
+        }
+
         $model = new BoardsModel();
         $model->delete($id);
 
-        return redirect()->to(site_url('boards'));
+        return redirect()->to(site_url('boards'))->with('success', 'Board erfolgreich gelöscht.');
     }
 }
